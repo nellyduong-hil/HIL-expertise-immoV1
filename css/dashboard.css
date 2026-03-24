@@ -837,4 +837,22 @@ body.dark .navbar { background: rgba(8,17,30,0.94); }
 .missions-free-cta-desc  { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .missions-free-cta-actions { display: flex; flex-direction: column; gap: 8px; min-width: 160px; }
 
+/* ─── STYLE RADAR ──────────────────────────────────────────────────── */
+.radar-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  border: 1px solid var(--border2);
+  margin-bottom: 8px;
+}
+.status-red { border-color: #ff4d4d; color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
+.status-green { border-color: var(--gold); color: var(--gold); background: rgba(201, 168, 76, 0.1); }
 
+/* On s'assure que les sections s'affichent correctement */
+.content-section { display: none; }
+.content-section.active { display: block; }
