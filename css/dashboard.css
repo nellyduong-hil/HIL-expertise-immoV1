@@ -838,18 +838,3 @@ body.dark .navbar { background: rgba(8,17,30,0.94); }
 .missions-free-cta-actions { display: flex; flex-direction: column; gap: 8px; min-width: 160px; }
 
 
-/* ─── STYLE RADAR ──────────────────────────────────────────────────── */
-.radar-circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 18px;
-  border: 2px solid var(--border2);
-  transition: all 0.4s;
-}
-.status-red { border-color: #EF4444; color: #EF4444; background: rgba(239, 68, 68, 0.1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
-.status-green { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
