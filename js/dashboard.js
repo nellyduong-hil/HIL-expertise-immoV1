@@ -1580,5 +1580,3 @@ function openDeleguerModal() {
   document.body.appendChild(m);
   m.addEventListener('click', function(e){ if (e.target === m) m.remove(); });
 }
-
-
