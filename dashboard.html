@@ -97,6 +97,7 @@
     <!-- Tabs -->
     <div class="dash-tabs">
       <button class="dash-tab active" data-tab="tab-bilan">📊 Bilan</button>
+      <button class="dash-tab" data-tab="tab-monparcours">📊 Mon parcours</button>     
       <button class="dash-tab" data-tab="tab-missions">✅ Missions</button>
       <button class="dash-tab" data-tab="tab-prestataires">👷 Prestataires</button>
       <button class="dash-tab" data-tab="tab-documents">📁 Documents</button>
@@ -110,6 +111,101 @@
       </div>
     </div>
 
+ <!-- ── MON PARCOURS ── -->
+    /* RADAR */
+  .radar-grid { display: grid; grid-template-columns: repeat(3,1fr); padding: 20px 16px 24px; gap: 0; }
+  .radar-item {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 20px 12px; border-radius: var(--radius-sm); position: relative;
+  }
+  .radar-item:not(:last-child)::after {
+    content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px; background: var(--border);
+  }
+  .radar-ring {
+    width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; transition: all .3s; border: 3px solid transparent;
+  }
+  .radar-ring.red {
+    background: var(--red-light); border-color: var(--red);
+    box-shadow: 0 0 0 6px rgba(239,68,68,.09);
+    animation: pulse-red 2.2s ease-in-out infinite;
+  }
+  .radar-ring.green {
+    background: var(--green-light); border-color: var(--green);
+    box-shadow: 0 0 0 6px rgba(16,185,129,.08);
+  }
+  .radar-ring.orange {
+    background: var(--orange-light); border-color: var(--orange);
+    box-shadow: 0 0 0 6px rgba(245,158,11,.08);
+  }
+  @keyframes pulse-red {
+    0%,100% { box-shadow: 0 0 0 6px rgba(239,68,68,.09); }
+    50% { box-shadow: 0 0 0 14px rgba(239,68,68,.03); }
+  }
+  .radar-label { font-size: 15px; font-weight: 600; }
+  .status-badge {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: .3px;
+  }
+  .status-badge.red { background: var(--red-light); color: var(--red); }
+  .status-badge.green { background: var(--green-light); color: var(--green); }
+  .status-badge.orange { background: var(--orange-light); color: var(--orange); }
+  .radar-status { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .btn-resolve {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    background: var(--accent); color: #fff; border: none; border-radius: 7px;
+    padding: 7px 16px; cursor: pointer; transition: all .15s;
+  }
+  .btn-resolve:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.3); }
+
+  /* TIMELINE */
+  .timeline-wrap { padding: 20px 24px 24px; }
+  .timeline-track {
+    display: flex; align-items: flex-start; position: relative; padding-top: 8px;
+  }
+  .timeline-track::before {
+    content: ''; position: absolute; top: 28px; left: 5%; right: 5%;
+    height: 2px; background: var(--border); z-index: 0;
+  }
+  .timeline-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; cursor: pointer; }
+  .step-node {
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; font-weight: 700; z-index: 1;
+    transition: all .2s; border: 2.5px solid transparent;
+  }
+  .step-node.done { background: var(--green); color: #fff; border-color: var(--green); }
+  .step-node.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 0 0 5px rgba(37,99,235,.15);
+    animation: pulse-blue 2s ease-in-out infinite;
+  }
+  @keyframes pulse-blue {
+    0%,100% { box-shadow: 0 0 0 5px rgba(37,99,235,.15); }
+    50% { box-shadow: 0 0 0 10px rgba(37,99,235,.06); }
+  }
+  .step-node.locked { background: var(--bg); color: var(--text-light); border-color: var(--border); font-size: 12px; }
+  .step-label { font-size: 11px; font-weight: 500; color: var(--text-muted); text-align: center; max-width: 72px; line-height: 1.4; }
+  .step-label.active { color: var(--accent); font-weight: 700; }
+  .step-label.done { color: var(--green); }
+  .active-action {
+    margin-top: 20px; background: var(--accent-light); border: 1px solid #BFDBFE;
+    border-radius: var(--radius-sm); padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .active-action-text { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .active-action-text strong { font-weight: 700; }
+  .btn-small {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    background: var(--accent); color: #fff; border: none; border-radius: 7px;
+    padding: 8px 14px; cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
+  }
+  .btn-small:hover { background: var(--accent-hover); }
+
+  /* BOTTOM */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+
+
+       
     <!-- ── MISSIONS ── -->
     <div class="tab-pane" id="tab-missions">
       <div id="missionsContent">
