@@ -1,5 +1,4 @@
-/* ─── auth.js — Timonia Demo Authentication ─────────────────────────────── */
-
+/* ─── auth.js — Home in Love Demo Authentication ─────────────────────────── */
 const DEMO_PASSWORD = 'homeinlove2026';
 
 const DEMO_USERS = [
@@ -69,19 +68,6 @@ const DEMO_USERS = [
     projetType: 'location',
     avatar: 'JM',
   },
-  /* ── Investisseur ── */
-  {
-    email: 'invest@demo.fr',
-    password: DEMO_PASSWORD,
-    role: 'salarie',
-    prenom: 'Lucas',
-    nom: 'Invest',
-    entreprise: null,
-    partenaire: false,
-    projetType: 'investissement',
-    avatar: 'LI',
-  },
-  /* ── Mandataire ── */
   {
     email: 'claire@homeinlove.fr',
     password: DEMO_PASSWORD,
@@ -91,7 +77,6 @@ const DEMO_USERS = [
     nom: 'Dupont',
     avatar: 'CD',
   },
-  /* ── Admin ── */
   {
     email: 'admin@homeinlove.fr',
     password: DEMO_PASSWORD,
@@ -122,13 +107,9 @@ function authLoginAndRedirect(email, password) {
   if (user.role === 'mandataire' || user.role === 'admin') {
     window.location.href = 'mandataire.html';
   } else {
-    window.location.href = 'dashboard2.html';
+    window.location.href = 'dashboard.html';
   }
   return user;
-}
-
-function authLogoutOnLoginPage() {
-  sessionStorage.removeItem('timonia_user');
 }
 
 function authGetUser() {
@@ -139,6 +120,10 @@ function authGetUser() {
 function authLogout() {
   sessionStorage.removeItem('timonia_user');
   window.location.href = 'login.html';
+}
+
+function authLogoutOnLoginPage() {
+  sessionStorage.removeItem('timonia_user');
 }
 
 function authRequire() {
