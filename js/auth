@@ -69,6 +69,18 @@ const DEMO_USERS = [
     projetType: 'location',
     avatar: 'JM',
   },
+  /* ── Investisseur ── */
+  {
+    email: 'invest@demo.fr',
+    password: DEMO_PASSWORD,
+    role: 'salarie',
+    prenom: 'Lucas',
+    nom: 'Invest',
+    entreprise: null,
+    partenaire: false,
+    projetType: 'investissement',
+    avatar: 'LI',
+  },
   /* ── Mandataire ── */
   {
     email: 'claire@homeinlove.fr',
@@ -110,7 +122,7 @@ function authLoginAndRedirect(email, password) {
   if (user.role === 'mandataire' || user.role === 'admin') {
     window.location.href = 'mandataire.html';
   } else {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'dashboard2.html';
   }
   return user;
 }
