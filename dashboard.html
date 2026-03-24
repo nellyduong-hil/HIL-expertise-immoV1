@@ -203,6 +203,82 @@
   /* BOTTOM */
   .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+<!-- RADAR -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Ma Sécurisation Immobilière</span>
+      <span style="font-size:12px;color:var(--text-muted)">Mis à jour il y a 2h</span>
+    </div>
+    <div class="radar-grid">
+      <div class="radar-item">
+        <div class="radar-ring red">⚖️</div>
+        <div class="radar-label">Juridique</div>
+        <div class="radar-status">
+          <span class="status-badge red">⚠ Risque détecté</span>
+          <button class="btn-resolve" onclick="openModal('juridique')">Résoudre →</button>
+        </div>
+      </div>
+      <div class="radar-item">
+        <div class="radar-ring red">🔧</div>
+        <div class="radar-label">Technique</div>
+        <div class="radar-status">
+          <span class="status-badge red">⚠ Risque détecté</span>
+          <button class="btn-resolve" onclick="openModal('technique')">Résoudre →</button>
+        </div>
+      </div>
+      <div class="radar-item">
+        <div class="radar-ring green">💶</div>
+        <div class="radar-label">Financier</div>
+        <div class="radar-status">
+          <span class="status-badge green">✓ Validé par expert</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Mon Plan de Route</span>
+      <span style="font-size:12px;color:var(--text-muted)">Étape 3 / 7</span>
+    </div>
+    <div class="timeline-wrap">
+      <div class="timeline-track">
+        <div class="timeline-step">
+          <div class="step-node done">✓</div>
+          <div class="step-label done">Diagnostic Flash</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-node done">✓</div>
+          <div class="step-label done">Offre déposée</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-node active">3</div>
+          <div class="step-label active">Audit Technique</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Compromis</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Financement</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Acte Notarié</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Remise des clés</div>
+        </div>
+      </div>
+      <div class="active-action">
+        <div class="active-action-text"><strong>Action requise :</strong> Déposer votre DPE dans le coffre-fort pour débloquer l'audit technique.</div>
+        <button class="btn-small">Déposer →</button>
+      </div>
+    </div>
+  </div>
 
 
        
