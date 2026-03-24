@@ -1582,20 +1582,3 @@ function openDeleguerModal() {
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   MON PARCOURS
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-function showSection(sectionId) {
-  // 1. Cacher toutes les sections
-  document.querySelectorAll('.content-section').forEach(section => {
-    section.classList.remove('active');
-  });
-  // 2. Afficher la section demandée
-  document.getElementById(sectionId).classList.add('active');
-}
-
-// Par défaut, on affiche le parcours au chargement
-document.addEventListener('DOMContentLoaded', () => {
-    showSection('mon-parcours');
-});
