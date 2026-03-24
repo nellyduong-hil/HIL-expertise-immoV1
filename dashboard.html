@@ -110,7 +110,55 @@
         <div style="text-align:center;padding:40px;color:var(--muted)">Chargement…</div>
       </div>
     </div>
-     
+
+   <!-- ── MON PARCOURS ── -->
+ <div class="tab-pane" id="tab-monparcours">
+          <!-- TIMELINE -->
+            <div class="card">
+                  <div class="card-header">
+      <span class="card-title">Mon Plan de Route</span>
+      <span style="font-size:12px;color:var(--text-muted)">Étape 3 / 7</span>
+    </div>
+    <div class="timeline-wrap">
+      <div class="timeline-track">
+        <div class="timeline-step">
+          <div class="step-node done">✓</div>
+          <div class="step-label done">Diagnostic Flash</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-node done">✓</div>
+          <div class="step-label done">Offre déposée</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-node active">3</div>
+          <div class="step-label active">Audit Technique</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Compromis</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Financement</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Acte Notarié</div>
+        </div>
+        <div class="timeline-step" onclick="openModal('shield')">
+          <div class="step-node locked">🔒</div>
+          <div class="step-label">Remise des clés</div>
+        </div>
+      </div>
+      <div class="active-action">
+        <div class="active-action-text"><strong>Action requise :</strong> Déposer votre DPE dans le coffre-fort pour débloquer l'audit technique.</div>
+        <button class="btn-small">Déposer →</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+       
     <!-- ── MISSIONS ── -->
     <div class="tab-pane" id="tab-missions">
       <div id="missionsContent">
