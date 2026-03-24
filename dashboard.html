@@ -103,6 +103,57 @@
       <button class="dash-tab" data-tab="tab-notes">📝 Notes</button>
     </div>
 
+
+     <!-- ── Mon Parcours ── -->
+     <section id="mon-parcours" class="dashboard-section" style="display:none;">
+  
+       <div class="section-label">Indice de Sécurisation</div>
+  <div class="radar-container" style="display: flex; gap: 20px; margin-bottom: 40px;">
+    <div class="radar-item">
+      <div class="radar-circle status-red" id="radar-juridique">J</div>
+      <div class="tl-label">Juridique</div>
+    </div>
+    <div class="radar-item">
+      <div class="radar-circle status-green" id="radar-technique">T</div>
+      <div class="tl-label">Technique</div>
+    </div>
+    <div class="radar-item">
+      <div class="radar-circle status-red" id="radar-financier">F</div>
+      <div class="tl-label">Financier</div>
+    </div>
+  </div>
+
+  <div class="section-label">Progression du Projet</div>
+  <div class="timeline-track">
+    <div class="tl-step done"><div class="tl-node">01</div><div class="tl-label">Diag Flash</div></div>
+    <div class="tl-step current"><div class="tl-node">02</div><div class="tl-label">Audit</div></div>
+    <div class="tl-step"><div class="tl-node">03</div><div class="tl-label">Stratégie</div></div>
+    <div class="tl-step"><div class="tl-node">04</div><div class="tl-label">Sourcing</div></div>
+    <div class="tl-step"><div class="tl-node">05</div><div class="tl-label">Sécurisation</div></div>
+    <div class="tl-step"><div class="tl-node">06</div><div class="tl-label">Signature</div></div>
+    <div class="tl-step"><div class="tl-node">07</div><div class="tl-label">Livraison</div></div>
+  </div>
+
+  <div class="section-label">Actions Requises</div>
+  <div class="next-steps">
+    <div class="next-step-card unlock">
+      <div class="nsc-num">ACTION 01</div>
+      <div class="nsc-title">Bouclier Technique</div>
+      <div class="nsc-desc">Sécurisez l'état du bien et évitez les vices cachés.</div>
+      <button class="btn-unlock" onclick="window.open('TON_LIEN_STRIPE')">Commander 590€</button>
+    </div>
+    <div class="next-step-card">
+      <div class="nsc-num">OPTION 02</div>
+      <div class="nsc-title">Délégation Totale</div>
+      <div class="nsc-desc">Confiez-nous l'intégralité des démarches opérationnelles.</div>
+      <button class="btn-unlock" style="background: transparent; border: 1px solid var(--gold); color: var(--gold);">Nous contacter</button>
+    </div>
+  </div>
+
+</section>
+
+
+       
     <!-- ── BILAN ── -->
     <div class="tab-pane active" id="tab-bilan">
       <div class="bilan-wrap" id="bilanContent">
