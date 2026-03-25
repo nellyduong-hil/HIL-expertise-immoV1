@@ -1581,4 +1581,250 @@ function openDeleguerModal() {
   m.addEventListener('click', function(e){ if (e.target === m) m.remove(); });
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   TIMELINES — Parcours par type de projet
+   Dates hypothétiques calculées depuis une date de départ J0.
+   Seul le mandataire peut modifier les dates.
+   statut : 'done' | 'current' | 'future'
+   acteur : 'cabinet' | 'client' | 'ensemble'
+   ═══════════════════════════════════════════════════════════════════════════ */
+var TIMELINES = {
+
+  'location': {
+    nom: 'Recherche Location',
+    etapes: [
+      { id:1, statut:'done',    acteur:'cabinet',  jours:0,   titre:'Diagnostic Flash',              desc:'Budget validé · Cahier des charges défini',                  shield:'Validé par Home in Love' },
+      { id:2, statut:'done',    acteur:'ensemble', jours:7,   titre:'Préparation du dossier',         desc:'Dossier locataire optimisé · Visale, APL, Loca-Pass vérifiés', shield:'Validé par Home in Love' },
+      { id:3, statut:'current', acteur:'cabinet',  jours:14,  titre:'Sélection des biens',           desc:'Tri des annonces selon vos critères',                          shield:'Home in Love analyse chaque bien' },
+      { id:4, statut:'future',  acteur:'client',   jours:21,  titre:'Visites',                        desc:'Vous visitez · Home in Love vous accompagne',                  shield:'Grille de visite préparée',
+        delegable: { label:'Envoyer un mandataire à votre place', prix:120 } },
+      { id:5, statut:'future',  acteur:'cabinet',  jours:30,  titre:'Vérification du bail',           desc:'Conformité loi ALUR · Zéro clause abusive',                   shield:'Vous ne signez rien sans notre aval' },
+      { id:6, statut:'future',  acteur:'ensemble', jours:35,  titre:'Signature du bail',              desc:'',                                                             shield:'Home in Love présent à la signature' },
+    ],
+  },
+
+  'achat': {
+    nom: 'Recherche Achat',
+    etapes: [
+      { id:1, statut:'done',    acteur:'cabinet',  jours:0,   titre:'Diagnostic Flash',              desc:'Budget validé · Capacité emprunt simulée · PTZ vérifié',       shield:'Validé par Home in Love' },
+      { id:2, statut:'done',    acteur:'cabinet',  jours:10,  titre:'Dossier bancaire',              desc:'Accord de principe obtenu · Taux négocié',                    shield:'Validé par Home in Love' },
+      { id:3, statut:'current', acteur:'client',   jours:20,  titre:'Recherche & Visites',           desc:'Vous visitez · Home in Love qualifie chaque bien',             shield:'Grille d\'analyse de visite préparée',
+        delegable: { label:'Déléguer la recherche à Home in Love', prix:1490 } },
+      { id:4, statut:'future',  acteur:'cabinet',  jours:45,  titre:'Audit Pré-Offre',               desc:'PV AG lus · Travaux cachés détectés · DPE analysé',            shield:'Vous n\'achetez pas sans notre audit' },
+      { id:5, statut:'future',  acteur:'ensemble', jours:55,  titre:'Offre & Négociation',           desc:'',                                                             shield:'Home in Love rédige et argumente' },
+      { id:6, statut:'future',  acteur:'cabinet',  jours:75,  titre:'Compromis de vente',            desc:'',                                                             shield:'Home in Love présent · Zéro surprise' },
+      { id:7, statut:'future',  acteur:'cabinet',  jours:120, titre:'Acte authentique',              desc:'',                                                             shield:'Coordination notaire par Home in Love' },
+    ],
+  },
+
+  'mise-location': {
+    nom: 'Mise en Location',
+    etapes: [
+      { id:1, statut:'done',    acteur:'cabinet',  jours:0,   titre:'Estimation & Conformité',       desc:'Loyer marché calculé · Diagnostics vérifiés',                  shield:'Validé par Home in Love' },
+      { id:2, statut:'done',    acteur:'cabinet',  jours:7,   titre:'Annonce & Publication',         desc:'Annonce optimisée · Diffusion multi-plateformes',               shield:'Validé par Home in Love' },
+      { id:3, statut:'current', acteur:'cabinet',  jours:14,  titre:'Sélection des candidats',       desc:'Scoring solvabilité · Vérification dossiers',                  shield:'Aucun locataire non fiable ne passe' },
+      { id:4, statut:'future',  acteur:'client',   jours:21,  titre:'Visites',                       desc:'Vous organisez les visites',                                    shield:'Home in Love a pré-filtré les candidats',
+        delegable: { label:'Déléguer les visites à Home in Love', prix:120 } },
+      { id:5, statut:'future',  acteur:'cabinet',  jours:28,  titre:'Rédaction du bail',             desc:'',                                                             shield:'Bail conforme loi ALUR · Zéro litige' },
+      { id:6, statut:'future',  acteur:'ensemble', jours:35,  titre:'État des lieux & Remise des clés', desc:'',                                                          shield:'Home in Love présent à l\'entrée' },
+    ],
+  },
+
+  'vente': {
+    nom: 'Mise en Vente',
+    etapes: [
+      { id:1, statut:'done',    acteur:'cabinet',  jours:0,   titre:'Estimation & Stratégie',        desc:'Prix DVF · Net Vendeur calculé · Plus-value vérifiée',         shield:'Validé par Home in Love' },
+      { id:2, statut:'done',    acteur:'cabinet',  jours:7,   titre:'Dossier juridique',             desc:'PV AG · DPE · Carnet entretien · Dossier béton',               shield:'Validé par Home in Love' },
+      { id:3, statut:'done',    acteur:'cabinet',  jours:14,  titre:'Annonce & Marketing',           desc:'Annonce IA · Photos pro · Diffusion ciblée',                   shield:'Validé par Home in Love' },
+      { id:4, statut:'current', acteur:'client',   jours:28,  titre:'Visites & Scoring acheteurs',   desc:'Vous faites visiter · Home in Love filtre la solvabilité',      shield:'Aucun acheteur non qualifié ne visite',
+        delegable: { label:'Déléguer les visites à Home in Love', prix:120 } },
+      { id:5, statut:'future',  acteur:'cabinet',  jours:45,  titre:'Analyse des offres',            desc:'',                                                             shield:'Home in Love vérifie le financement avant acceptation' },
+      { id:6, statut:'future',  acteur:'cabinet',  jours:55,  titre:'Compromis de vente',            desc:'',                                                             shield:'Toutes les clauses vérifiées · Vous êtes protégé' },
+      { id:7, statut:'future',  acteur:'cabinet',  jours:90,  titre:'Acte authentique',              desc:'',                                                             shield:'Coordination notaire par Home in Love' },
+    ],
+  },
+
+  'renovation': {
+    nom: 'Rénovation',
+    etapes: [
+      { id:1, statut:'done',    acteur:'cabinet',  jours:0,   titre:'Audit & Budget',                desc:'Budget travaux estimé · MaPrimeRénov\', CEE, Éco-PTZ vérifiés', shield:'Validé par Home in Love' },
+      { id:2, statut:'done',    acteur:'cabinet',  jours:7,   titre:'Dossiers aides déposés',        desc:'MaPrimeRénov\' · Éco-PTZ · CEE · Action Logement',             shield:'Validé par Home in Love' },
+      { id:3, statut:'current', acteur:'cabinet',  jours:14,  titre:'Sélection des artisans',        desc:'Décennales vérifiées · Devis comparés · RGE confirmé',          shield:'Aucun artisan non qualifié ne travaille chez vous' },
+      { id:4, statut:'future',  acteur:'client',   jours:30,  titre:'Démarrage & Suivi chantier',    desc:'Vous suivez · Home in Love encadre',                            shield:'Suivi planning par Home in Love',
+        delegable: { label:'Déléguer le suivi chantier à Home in Love', prix:500 } },
+      { id:5, statut:'future',  acteur:'cabinet',  jours:90,  titre:'Réception des travaux',         desc:'',                                                             shield:'Home in Love lève les réserves avec vous' },
+      { id:6, statut:'future',  acteur:'cabinet',  jours:100, titre:'Déblocage des aides',           desc:'',                                                             shield:'Justificatifs transmis par Home in Love' },
+      { id:7, statut:'future',  acteur:'self',     jours:105, titre:'DPE mis à jour & Bilan final',  desc:'',                                                             shield:'Gain énergétique certifié · Valeur du bien augmentée' },
+    ],
+  },
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RENDU ONGLET MON PARCOURS
+   ═══════════════════════════════════════════════════════════════════════════ */
+function renderParcours() {
+  var wrap = document.getElementById('tab-monparcours');
+  if (!wrap) return;
+
+  var p   = proj();
+  var tl  = TIMELINES[p.type];
+
+  /* Si pas de timeline définie pour ce type */
+  if (!tl) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Parcours en cours de configuration par votre expert.</div>';
+    return;
+  }
+
+  /* Calculer les dates à partir de la deadline ou de la date de début */
+  var base = p.deadline ? new Date(p.deadline) : new Date();
+  /* On calcule les dates depuis aujourd'hui comme J0 */
+  var j0 = new Date('2026-01-01'); /* Date de départ démo */
+
+  function dateEtape(jours) {
+    var d = new Date(j0);
+    d.setDate(d.getDate() + jours);
+    return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  /* Index de l'étape courante */
+  var currentIdx = tl.etapes.findIndex(function(e){ return e.statut === 'current'; });
+
+  /* ── HTML ── */
+  var html = '';
+
+  /* Section RÉALISÉ */
+  var done = tl.etapes.filter(function(e){ return e.statut === 'done'; });
+  if (done.length) {
+    html += '<div class="parcours-section-label">✅ Ce que nous avons déjà fait pour vous</div>';
+    html += '<div class="parc-list">';
+    done.forEach(function(e, i) {
+      html += renderEtape(e, i < done.length - 1, dateEtape(e.jours), false);
+    });
+    html += '</div>';
+  }
+
+  /* Marqueur */
+  html += '<div class="parc-here-marker"><div class="parc-here-line"></div><div class="parc-here-badge">📍 Vous êtes ici</div><div class="parc-here-line"></div></div>';
+
+  /* Étape CURRENT */
+  var current = tl.etapes.find(function(e){ return e.statut === 'current'; });
+  if (current) {
+    html += '<div class="parc-list">' + renderEtape(current, true, dateEtape(current.jours), true) + '</div>';
+  }
+
+  /* Section À VENIR */
+  var future = tl.etapes.filter(function(e){ return e.statut === 'future'; });
+  if (future.length) {
+    html += '<div class="parcours-section-label" style="margin-top:8px">🔮 Ce qui vous attend</div>';
+    html += '<div class="parc-list">';
+    future.forEach(function(e, i) {
+      html += renderEtape(e, i < future.length - 1, dateEtape(e.jours), false);
+    });
+    html += '</div>';
+  }
+
+  /* Radar */
+  html += renderRadar();
+
+  /* CTA Boucliers */
+  html += renderBoucliersParc();
+
+  wrap.innerHTML = html;
+}
+
+function renderEtape(e, hasLine, dateStr, isCurrent) {
+  var acteurLabels = { cabinet:'Cabinet', client:'Vous', ensemble:'Vous + Cabinet', self:'Vous' };
+  var acteurCls    = { cabinet:'acteur-cab', client:'acteur-cli', ensemble:'acteur-ens', self:'acteur-cli' };
+  var dotCls       = { done:'parc-dot-done', current:'parc-dot-current', future:'parc-dot-future' };
+  var dotTxt       = { done:'✓', current:'●', future:'' };
+
+  var shieldHtml = '';
+  if (e.shield) {
+    var isCabinet = (e.statut === 'done' || e.statut === 'current') && e.acteur === 'cabinet';
+    shieldHtml = '<div class="parc-shield' + (isCabinet ? ' parc-shield-active' : ' parc-shield-promise') + '">🛡️ ' + e.shield + '</div>';
+  }
+
+  var delegHtml = '';
+  if (e.delegable && (e.statut === 'future' || e.statut === 'current')) {
+    delegHtml = '<a href="https://buy.stripe.com/REMPLACER" target="_blank" class="btn-parc-deleg">Déléguer — ' + e.delegable.prix + ' € →</a>';
+  }
+
+  var bodyClass = isCurrent ? 'parc-body parc-body-current' : 'parc-body';
+
+  return '<div class="parc-step ' + e.statut + '">' +
+    '<div class="parc-left">' +
+      '<div class="parc-dot ' + dotCls[e.statut] + '">' + dotTxt[e.statut] + '</div>' +
+      (hasLine ? '<div class="parc-line"></div>' : '') +
+    '</div>' +
+    '<div class="' + bodyClass + '">' +
+      '<div class="parc-meta">' +
+        '<span class="parc-date">' + dateStr + '</span>' +
+        '<span class="parc-acteur ' + acteurCls[e.acteur] + '">' + acteurLabels[e.acteur] + '</span>' +
+      '</div>' +
+      '<div class="parc-titre">' + e.titre + '</div>' +
+      (e.desc ? '<div class="parc-desc">' + e.desc + '</div>' : '') +
+      shieldHtml +
+      delegHtml +
+    '</div>' +
+  '</div>';
+}
+
+function renderRadar() {
+  return '<div class="card" style="margin-top:20px;margin-bottom:16px">' +
+    '<div class="card-header"><span class="card-title">Radar de Conformité</span><span style="font-size:12px;color:var(--muted)">Score global : 72%</span></div>' +
+    '<div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">' +
+      '<div style="flex-shrink:0;display:flex;justify-content:center">' +
+        '<svg width="160" height="160" viewBox="0 0 160 160">' +
+          '<polygon points="80,10 145,52 145,108 80,150 15,108 15,52" fill="none" stroke="var(--border)" stroke-width="1"/>' +
+          '<polygon points="80,30 125,58 125,102 80,130 35,102 35,58" fill="none" stroke="var(--border)" stroke-width="1"/>' +
+          '<polygon points="80,50 105,64 105,96 80,110 55,96 55,64" fill="none" stroke="var(--border)" stroke-width="1"/>' +
+          '<line x1="80" y1="10" x2="80" y2="150" stroke="var(--border)" stroke-width="1"/>' +
+          '<line x1="15" y1="52" x2="145" y2="108" stroke="var(--border)" stroke-width="1"/>' +
+          '<line x1="145" y1="52" x2="15" y2="108" stroke="var(--border)" stroke-width="1"/>' +
+          '<polygon points="80,23 131,62 128,98 80,127 32,100 40,60" fill="rgba(196,122,0,0.15)" stroke="#c47a00" stroke-width="2"/>' +
+          '<circle cx="80" cy="23" r="4" fill="#c47a00"/>' +
+          '<circle cx="131" cy="62" r="4" fill="#c47a00"/>' +
+          '<circle cx="128" cy="98" r="4" fill="#c47a00"/>' +
+          '<circle cx="80" cy="127" r="4" fill="#c47a00"/>' +
+          '<circle cx="32" cy="100" r="4" fill="#c47a00"/>' +
+          '<circle cx="40" cy="60" r="4" fill="#c47a00"/>' +
+        '</svg>' +
+      '</div>' +
+      '<div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:180px">' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#22c55e"></span><span class="radar-leg-label">Juridique</span><span class="radar-leg-val ok">72% ✓</span></div>' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#22c55e"></span><span class="radar-leg-label">Technique</span><span class="radar-leg-val ok">85% ✓</span></div>' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#f59e0b"></span><span class="radar-leg-label">Financier</span><span class="radar-leg-val warn">60% ⚠</span></div>' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#22c55e"></span><span class="radar-leg-label">Documents</span><span class="radar-leg-val ok">90% ✓</span></div>' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#ef4444"></span><span class="radar-leg-label">Délais</span><span class="radar-leg-val bad">55% ✗</span></div>' +
+        '<div class="radar-leg-item"><span class="radar-dot" style="background:#22c55e"></span><span class="radar-leg-label">Budget</span><span class="radar-leg-val ok">80% ✓</span></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderBoucliersParc() {
+  return '<div class="card-header" style="margin-bottom:12px"><span class="card-title">Vos boucliers de protection</span></div>' +
+    '<div class="parcours-ctas" id="parcoursBoucliers">' +
+      '<div class="card parcours-cta-card">' +
+        '<div class="parcours-cta-icon">⚖️</div>' +
+        '<div class="parcours-cta-body"><div class="parcours-cta-title">Bouclier Juridique</div><div class="parcours-cta-desc">Lecture PV AG · Bail vérifié · Zéro surprise</div><div class="parcours-cta-price">290 €</div></div>' +
+        '<a href="https://buy.stripe.com/JURIDIQUE" target="_blank" class="btn btn-primary btn-sm">Commander →</a>' +
+      '</div>' +
+      '<div class="card parcours-cta-card">' +
+        '<div class="parcours-cta-icon">🔧</div>' +
+        '<div class="parcours-cta-body"><div class="parcours-cta-title">Bouclier Technique</div><div class="parcours-cta-desc">DPE · Travaux détectés · Aucun vice caché</div><div class="parcours-cta-price">190 €</div></div>' +
+        '<a href="https://buy.stripe.com/TECHNIQUE" target="_blank" class="btn btn-primary btn-sm">Commander →</a>' +
+      '</div>' +
+      '<div class="card parcours-cta-card">' +
+        '<div class="parcours-cta-icon">💰</div>' +
+        '<div class="parcours-cta-body"><div class="parcours-cta-title">Bouclier Financier</div><div class="parcours-cta-desc">DVF · Prix défendu · Négociation assistée</div><div class="parcours-cta-price">290 €</div></div>' +
+        '<a href="https://buy.stripe.com/FINANCIER" target="_blank" class="btn btn-primary btn-sm">Commander →</a>' +
+      '</div>' +
+      '<div class="card parcours-cta-card parcours-cta-gold">' +
+        '<div class="parcours-cta-icon">🏆</div>' +
+        '<div class="parcours-cta-body"><div class="parcours-cta-title">Délégation Totale</div><div class="parcours-cta-desc">Mandat signé · On fait tout · Carte T</div><div class="parcours-cta-price">Sur RDV</div></div>' +
+        '<a href="https://calendly.com/homeinlove" target="_blank" class="btn btn-primary btn-sm" style="background:var(--gold,#c47a00)">Prendre RDV →</a>' +
+      '</div>' +
+    '</div>';
+}
 
