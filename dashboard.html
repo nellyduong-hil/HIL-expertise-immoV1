@@ -9,6 +9,127 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/dashboard.css">
+
+<style>
+/* ── PARCOURS TIMELINE ──────────────────────────────── */
+.parcours-section-label {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted);
+  margin: 16px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.parcours-section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.parc-here-marker {
+  display: flex; align-items: center; gap: 10px; margin: 10px 0;
+}
+.parc-here-line { flex:1; height:1.5px; background:linear-gradient(90deg,var(--accent,#1e63f0),var(--teal,#0ba592)); }
+.parc-here-badge {
+  font-size: 10px; font-weight: 800; color: var(--accent,#1e63f0);
+  background: rgba(30,99,240,.08); border: 1.5px solid rgba(30,99,240,.2);
+  padding: 3px 12px; border-radius: 20px; white-space: nowrap;
+}
+
+.parc-list { display: flex; flex-direction: column; }
+
+.parc-step { display: flex; gap: 12px; padding: 3px 0; }
+
+.parc-left { display:flex; flex-direction:column; align-items:center; width:24px; flex-shrink:0; }
+
+.parc-dot {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; flex-shrink: 0; z-index: 1;
+}
+.parc-dot-done    { background:var(--teal,#0ba592); color:#fff; }
+.parc-dot-current { background:var(--accent,#1e63f0); color:#fff; box-shadow:0 0 0 3px rgba(30,99,240,.15); }
+.parc-dot-future  { background:var(--surf2,#f0f2f8); border:2px dashed var(--border); color:var(--muted); }
+
+.parc-line { width:2px; flex:1; min-height:12px; margin:2px 0; }
+.parc-step.done    .parc-line { background:var(--teal,#0ba592); opacity:.18; }
+.parc-step.current .parc-line { background:var(--accent,#1e63f0); opacity:.2; }
+.parc-step.future  .parc-line { background:var(--border); }
+
+.parc-body { flex:1; padding-bottom:14px; }
+.parc-body-current {
+  background: rgba(30,99,240,.03);
+  border: 1px solid rgba(30,99,240,.1);
+  border-radius: 12px; padding: 12px 14px; margin-left: -2px;
+}
+
+.parc-meta { display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap; }
+.parc-date { font-size:10px; color:var(--muted); }
+.parc-acteur { font-size:9px; font-weight:800; padding:2px 7px; border-radius:20px; }
+.acteur-cab { background:rgba(11,165,146,.12); color:var(--teal,#0ba592); }
+.acteur-cli { background:rgba(30,99,240,.10); color:var(--accent,#1e63f0); }
+.acteur-ens { background:rgba(196,122,0,.10); color:var(--gold,#c47a00); }
+
+.parc-titre { font-size:13px; font-weight:800; color:var(--text); margin-bottom:3px; line-height:1.3; }
+.parc-desc  { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:5px; }
+
+.parc-shield {
+  display: inline-flex; align-items: center; gap:5px;
+  font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px;
+  margin-bottom: 5px;
+}
+.parc-shield-active  { color:var(--teal,#0ba592); background:rgba(11,165,146,.08); border:1px solid rgba(11,165,146,.18); }
+.parc-shield-promise { color:var(--muted); background:var(--surf2,#f0f2f8); border:1px solid var(--border); }
+
+.parc-step.done   .parc-body { opacity:.82; }
+.parc-step.future .parc-body { opacity:.55; }
+.parc-step.current .parc-titre { color:var(--accent,#1e63f0); font-size:14px; }
+
+.btn-parc-deleg {
+  display: inline-flex; align-items:center; gap:5px;
+  background:none; border:1.5px solid var(--accent,#1e63f0);
+  border-radius:8px; padding:5px 12px;
+  font-size:11px; font-weight:700; color:var(--accent,#1e63f0);
+  cursor:pointer; transition:all .15s; text-decoration:none;
+}
+.btn-parc-deleg:hover { background:var(--accent,#1e63f0); color:#fff; }
+
+/* Radar */
+.radar-leg-item { display:flex; align-items:center; gap:8px; font-size:12px; }
+.radar-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.radar-leg-label { flex:1; color:var(--text); }
+.radar-leg-val { font-size:11px; font-weight:700; }
+.radar-leg-val.ok   { color:#22c55e; }
+.radar-leg-val.warn { color:#f59e0b; }
+.radar-leg-val.bad  { color:#ef4444; }
+
+/* CTA Boucliers */
+.parcours-ctas { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+.parcours-cta-card { display:flex; flex-direction:column; gap:10px; padding:16px !important; }
+.parcours-cta-icon { font-size:1.6rem; }
+.parcours-cta-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.parcours-cta-desc  { font-size:12px; color:var(--muted); line-height:1.4; }
+.parcours-cta-price { font-size:1.1rem; font-weight:800; color:var(--gold,#c47a00); margin-top:4px; }
+.parcours-cta-gold  { border-color:rgba(196,122,0,.3) !important; background:rgba(196,122,0,.04) !important; }
+
+/* Prestataires HIL */
+.hil-prest-header { display:flex; align-items:center; gap:14px; background:var(--surf,#fff); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; flex-wrap:wrap; }
+.hil-services-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:8px; }
+.hil-service-card { display:flex; align-items:flex-start; gap:14px; background:var(--surf,#fff); border:1px solid var(--border); border-radius:12px; padding:16px; transition:border-color .2s; }
+.hil-service-active  { border-left:3px solid var(--teal,#0ba592); }
+.hil-service-coaching{ border-left:3px solid var(--gold,#c47a00); background:rgba(196,122,0,.03) !important; }
+.hil-service-icon { font-size:1.5rem; flex-shrink:0; margin-top:2px; }
+.hil-service-body { flex:1; }
+.hil-service-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.hil-service-desc  { font-size:12px; color:var(--muted); margin-bottom:8px; }
+.hil-service-items { display:flex; flex-wrap:wrap; gap:6px; }
+.hil-service-item  { font-size:10px; font-weight:600; color:var(--teal,#0ba592); background:rgba(11,165,146,.08); padding:2px 8px; border-radius:20px; }
+.hil-service-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; min-width:90px; }
+.hil-service-price { font-size:1.1rem; font-weight:800; color:var(--text); }
+.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:10px; font-weight:800; }
+.badge-active  { background:rgba(11,165,146,.12); color:var(--teal,#0ba592); }
+.badge-partner { background:rgba(196,122,0,.12); color:var(--gold,#c47a00); }
+
+@media(max-width:600px){
+  .parcours-ctas { grid-template-columns:1fr; }
+  .hil-service-card { flex-wrap:wrap; }
+  .hil-service-right { flex-direction:row; align-items:center; width:100%; justify-content:space-between; }
+}
+</style>
+
 </head>
 <body>
 
@@ -111,51 +232,9 @@
       </div>
     </div>
 
-   <!-- ── MON PARCOURS ── -->
- <div class="tab-pane" id="tab-monparcours">
-          <!-- TIMELINE -->
-            <div class="card">
-                  <div class="card-header">
-      <span class="card-title">Mon Plan de Route</span>
-      <span style="font-size:12px;color:var(--text-muted)">Étape 3 / 7</span>
-    </div>
-    <div class="timeline-wrap">
-      <div class="timeline-track">
-        <div class="timeline-step">
-          <div class="step-node done">✓</div>
-          <div class="step-label done">Diagnostic Flash</div>
-        </div>
-        <div class="timeline-step">
-          <div class="step-node done">✓</div>
-          <div class="step-label done">Offre déposée</div>
-        </div>
-        <div class="timeline-step">
-          <div class="step-node active">3</div>
-          <div class="step-label active">Audit Technique</div>
-        </div>
-        <div class="timeline-step" onclick="openModal('shield')">
-          <div class="step-node locked">🔒</div>
-          <div class="step-label">Compromis</div>
-        </div>
-        <div class="timeline-step" onclick="openModal('shield')">
-          <div class="step-node locked">🔒</div>
-          <div class="step-label">Financement</div>
-        </div>
-        <div class="timeline-step" onclick="openModal('shield')">
-          <div class="step-node locked">🔒</div>
-          <div class="step-label">Acte Notarié</div>
-        </div>
-        <div class="timeline-step" onclick="openModal('shield')">
-          <div class="step-node locked">🔒</div>
-          <div class="step-label">Remise des clés</div>
-        </div>
-      </div>
-      <div class="active-action">
-        <div class="active-action-text"><strong>Action requise :</strong> Déposer votre DPE dans le coffre-fort pour débloquer l'audit technique.</div>
-        <button class="btn-small">Déposer →</button>
-      </div>
-    </div>
-  </div>
+   <!-- ── MON PARCOURS ── (rendu dynamique par renderParcours()) -->
+  <div class="tab-pane" id="tab-monparcours">
+    <div style="text-align:center;padding:40px;color:var(--muted)">Chargement…</div>
   </div>
 
        
