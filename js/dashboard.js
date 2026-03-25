@@ -526,6 +526,7 @@ function loadProject(idx) {
   renderPrestataires();
   renderDocuments();
   renderNotes();
+  renderParcours();
   switchTab('tab-bilan');
 }
 
@@ -669,6 +670,7 @@ function switchTab(tabId) {
   var pane = document.getElementById(tabId);
   if (btn)  btn.classList.add('active');
   if (pane) pane.classList.add('active');
+  if (tabId === 'tab-monparcours') renderParcours();
 }
 
 function renderTabs() {
